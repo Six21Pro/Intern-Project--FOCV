@@ -1,0 +1,113 @@
+import os#this for secrets in replit
+import time
+import googlemaps  # pip install googlemaps
+import pandas as pd  # pip install pandas
+import openpyxl
+
+
+def miles_to_meters(miles):
+    try:
+        return miles * 1_609.344
+    except:
+        return 0
+
+
+API_KEY = os.environ['APIKEY']
+map_client = googlemaps.Client(API_KEY)
+
+# Address to search near
+address = '2138 Croasdale Rd, Stroudsburg, PA'
+geocode = map_client.geocode(address=address)
+(lat, lng) = map(geocode[0]['geometry']['location'].get, ('lat', 'lng'))
+
+# Search parameters
+#search_string = 'pizza'
+search_string = input("input search string")
+howFar = input("how far in miles?")
+#xlToOpen = input("what is the name of the excel file?")
+
+#distance = miles_to_meters(1)
+distance = miles_to_meters(float(howFar))
+
+business_list = []
+
+# Initial request to get places
+response = map_client.places_nearby(location=(lat, lng),
+                                    keyword=search_string,
+                                    radius=distance)
+
+business_list.extend(response.get('results'))
+next_page_token = response.get('next_page_token')
+
+# Pagination to get all results
+while next_page_token:
+    time.sleep(2)  # Delay to avoid hitting rate limits
+    response = map_client.places_nearby(location=(lat, lng),
+                                        keyword=search_string,
+                                        radius=distance,
+                                        page_token=next_page_token)
+    business_list.extend(response.get('results'))
+    next_page_token = response.get('next_page_token')
+
+# Create a DataFrame from the business list
+df = pd.DataFrame(business_list)
+
+
+# Retrieve website URLs for each place
+def get_website_url(place_id):
+    try:
+        place_details = map_client.place(place_id)
+        website_url = place_details['result'].get('website',
+                                                  'No website available')
+        return website_url
+    except Exception as e:
+        return 'Error retrieving website'
+
+
+# Apply function to get website URLs for each business
+df['website'] = df['place_id'].apply(get_website_url)
+
+# Generate Google Maps URLs
+df['url'] = 'https://www.google.com/maps/place/?q=place_id:' + df['place_id']
+
+# Save to Excel
+df.to_excel('temp.xlsx', index=False)
+
+print(f"Saved {len(df)} businesses to Excel.")
+
+
+
+
+try:
+    destination_wb = openpyxl.load_workbook('destination.xlsx')
+except FileNotFoundError:
+    print("File not found, creating a new one")
+    destination_wb = openpyxl.Workbook()
+    destination_wb.save('destination.xlsx')
+    destination_wb = openpyxl.load_workbook('destination.xlsx')
+
+# Load source and destination workbooks
+source_wb = openpyxl.load_workbook('temp.xlsx')
+destination_wb = openpyxl.load_workbook('destination.xlsx')
+
+# Get the source sheet to copy
+source_sheet = source_wb['Sheet1']  # Replace 'Sheet1' with your source sheet's name
+
+# Create a new sheet in the destination workbook
+destination_sheet = destination_wb.create_sheet(search_string)  # New sheet name
+
+# Copy content from the source sheet to the new destination sheet
+for row in source_sheet.iter_rows():
+    for cell in row:
+        # Copy cell value
+        destination_sheet[cell.coordinate].value = cell.value
+        # Copy the cell style (if necessary)
+        #destination_sheet[cell.coordinate].font = cell.font
+        #destination_sheet[cell.coordinate].fill = cell.fill
+        #destination_sheet[cell.coordinate].border = cell.border
+        #destination_sheet[cell.coordinate].alignment = cell.alignment
+        #destination_sheet[cell.coordinate].number_format = cell.number_format
+        #destination_sheet[cell.coordinate].protection = cell.protection
+
+# Save the destination workbook with the copied sheet
+destination_wb.save('destination.xlsx')
