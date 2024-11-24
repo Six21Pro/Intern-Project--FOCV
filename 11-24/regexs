@@ -1,0 +1,49 @@
+class Regexs:
+
+    #regex = '<a .*? href="[^"]*?.*?">.*?Community.*?</a>'  #works to check the text, but not the link
+    #regex0 = '<a .*? href="[^"]*?.*?">.*?Aca.*?</a>'  #only for testing
+    regex1 = '<a .*? href="[^"]*?.*?">.*?Purpose.*?</a>'
+    regex2 = '<a .*? href="[^"]*?.*?">.*?Community.*?</a>'
+    regex3 = '<a .*? href="[^"]*?.*?">.*?Donat.*?</a>'
+    regex4 = '<a .*? href="[^"]*?.*?">.*?Philantropy.*?</a>'
+    regex5 = '<a .*? href="[^"]*?.*?">.*?Charit.*?</a>'
+    regex6 = '<a .*? href="[^"]*?.*?">.*?Giving.*?</a>'
+    regex7 = '<a .*? href="[^"]*?.*?">.*?Sustainability.*?</a>'
+    
+    #legex means: link-regular expression
+    wendysex = '<a .*? href="[^"]*?.menu.*?">.*?</a>'  #this will return just 'menu'
+    
+    wendyex2 = '<a .*? href="[^"]*?.what-we-value.*?">.*?</a>'
+    wendyex3 = 'menu'  #for testing
+    legex1 = '<a .*? href="[^"]*?.purpose.*?">.*?</a>'
+    legex2 = '<a .*? href="[^"]*?.communit.*?">.*?</a>'
+    legex3 = '<a .*? href="[^"]*?.donat.*?">.*?</a>'
+    legex4 = '<a .*? href="[^"]*?.philantropy.*?">.*?</a>'
+    legex5 = '<a .*? href="[^"]*?.charit.*?">.*?</a>'
+    legex6 = '<a .*? href="[^"]*?.giving.*?">.*?</a>'
+    legex7 = '<a .*? href="[^"]*?.sustainability.*?">.*?</a>'
+    legex8 = '<a .*? href="[^"]*?.stewardship.*?">.*?</a>'
+    legex12 = '<a .*? href="[^"]*?.our-planet.*?">.*?</a>'
+    legex13 = '<a .*? href="[^"]*?.enviro.*?change.*?">.*?</a>'
+    legex14 = '<a .*? href="[^"]*?.enviro.*?impact.*?">.*?</a>'
+    legex15 = '<a .*? href="[^"]*?.enviro.*?footprint.*?">.*?</a>'
+    legex16 = '<a .*? href="[^"]*?.global.*?impact.*?">.*?</a>'
+    legex17 = '<a .*? href="[^"]*?.green.*?globe.*?">.*?</a>'
+    legex18 = '<a .*? href="[^"]*?.green.*?planet.*?">.*?</a>'
+    legex19 = '<a .*? href="[^"]*?.responsibility.*?">.*?</a>'
+    
+    corpSiteex = '<a .*? href="[^"].*?corporate.*?">.*?</a>'
+    foundationSiteex = '<a .*? href="[^"]*?.foundation.*?">.*?</a>'
+    joke = r'<a [^>]*href="([^"]*?corporate[^"]*?)".*?>.*?</a>'  #ai gave me this, try it
+    foundCheck2 = r'https://tacobellfoundation.*?/.*?'
+    foundCheck = '<a.*?https://tacobellfoundation.*?/.*?</a>'
+    wenCheck = 'https?://[^"]*?what-we-value[^"]*'  #don't think this worked
+    listOfRegexs = [
+        legex1, legex2, legex3, legex4, legex5, legex6, legex7, legex8,
+        corpSiteex, foundationSiteex, legex12, legex13, legex14, legex15,
+        legex16, legex17, legex18, legex19
+    ]  #on 11/18 removed corpSitex, foundationSiteex. Nevermind bad idea
+    
+    def Regexs(self):
+      return self.listOfRegexs
+    
