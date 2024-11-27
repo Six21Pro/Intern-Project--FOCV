@@ -3,7 +3,7 @@ import time
 import googlemaps  # pip install googlemaps
 import pandas as pd  # pip install pandas
 import openpyxl #for excel manipulation
-from contextCreator import MyClass
+from contextCreator import Contexter
 
 
 def miles_to_meters(miles):
@@ -80,7 +80,7 @@ print(f"Saved {len(df)} businesses to Excel.")
 
 
 
-
+df.to_excel('temp.xlsx', index=False)
 
 
 df = pd.read_excel('temp.xlsx')  
@@ -88,7 +88,7 @@ df = pd.read_excel('temp.xlsx')
 urlsToScrape = df['website'].tolist()#put the wesite column in a list
 print(urlsToScrape)
 
-contextAdder = MyClass()
+contextAdder = Contexter()
 contextArray = []
 contextArray = contextAdder.addContext2(urlsToScrape)
 print(contextArray)
